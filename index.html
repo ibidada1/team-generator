@@ -122,7 +122,7 @@ font-size:14px;
 
 <div class="app">
 
-<h1>Iman's Team Generator⚡</h1>
+<h1>Iman's Team Generator</h1>
 
 <div class="controls">
 <input id="playerInput" placeholder="Enter player name">
@@ -182,9 +182,8 @@ const j=Math.floor(Math.random()*(i+1));
 
 function generateTeams(){
 
-const teamCount=parseInt(document.getElementById("teamCount").value);
-
-if(players.length===0||teamCount<=0) return;
+const teamCount = parseInt(document.getElementById("teamCount").value);
+if(players.length===0 || teamCount<=0) return;
 
 const shuffled=[...players];
 
@@ -195,16 +194,44 @@ shuffle(remaining);
 
 const teams=Array.from({length:teamCount},()=>[]);
 
-if(lockedPlayers.length>0){
-const teamIndex=Math.floor(Math.random()*teamCount);
-teams[teamIndex].push(...lockedPlayers);
+const baseSize=Math.floor(players.length/teamCount);
+const extra=players.length%teamCount;
+
+const teamLimits=[];
+
+for(let i=0;i<teamCount;i++){
+teamLimits[i]= i<extra ? baseSize+1 : baseSize;
 }
 
-remaining.forEach((player,i)=>{
-teams[i%teamCount].push(player);
+if(lockedPlayers.length>0){
+
+const possibleTeams=teamLimits
+.map((limit,index)=>({limit,index}))
+.filter(t=>t.limit>=lockedPlayers.length);
+
+const teamIndex=possibleTeams[Math.floor(Math.random()*possibleTeams.length)].index;
+
+teams[teamIndex].push(...lockedPlayers);
+
+}
+
+remaining.forEach(player=>{
+
+for(let i=0;i<teamCount;i++){
+
+if(teams[i].length < teamLimits[i]){
+
+teams[i].push(player);
+break;
+
+}
+
+}
+
 });
 
 renderTeams(teams);
+
 }
 
 function renderTeams(teams){
