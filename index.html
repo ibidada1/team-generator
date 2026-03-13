@@ -1,0 +1,242 @@
+<!-- file: index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Team Generator</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:"Poppins",sans-serif;
+}
+
+body{
+height:100vh;
+display:flex;
+justify-content:center;
+align-items:center;
+background:linear-gradient(135deg,#667eea,#764ba2);
+color:white;
+}
+
+.app{
+width:900px;
+background:rgba(255,255,255,0.1);
+backdrop-filter:blur(20px);
+padding:40px;
+border-radius:20px;
+box-shadow:0 20px 40px rgba(0,0,0,0.3);
+}
+
+h1{
+text-align:center;
+margin-bottom:25px;
+font-weight:600;
+}
+
+.controls{
+display:flex;
+gap:10px;
+margin-bottom:20px;
+}
+
+input{
+flex:1;
+padding:12px;
+border:none;
+border-radius:10px;
+outline:none;
+}
+
+button{
+padding:12px 18px;
+border:none;
+border-radius:10px;
+cursor:pointer;
+font-weight:600;
+background:#ff7a18;
+color:white;
+transition:0.2s;
+}
+
+button:hover{
+transform:translateY(-2px);
+box-shadow:0 6px 14px rgba(0,0,0,0.3);
+}
+
+.players{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+margin-bottom:20px;
+}
+
+.player-chip{
+background:rgba(255,255,255,0.2);
+padding:8px 14px;
+border-radius:20px;
+font-size:14px;
+}
+
+.team-controls{
+display:flex;
+gap:10px;
+margin-bottom:25px;
+}
+
+.teams{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
+gap:20px;
+}
+
+.team-card{
+background:rgba(255,255,255,0.15);
+border-radius:15px;
+padding:15px;
+}
+
+.team-title{
+font-weight:600;
+margin-bottom:10px;
+}
+
+.team-player{
+background:rgba(255,255,255,0.25);
+padding:6px 10px;
+border-radius:8px;
+margin-bottom:6px;
+font-size:14px;
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+<h1>Iman's Team Generator⚡</h1>
+
+<div class="controls">
+<input id="playerInput" placeholder="Enter player name">
+<button onclick="addPlayer()">Add</button>
+</div>
+
+<div class="players" id="playerList"></div>
+
+<div class="team-controls">
+<input id="teamCount" type="number" value="2" min="1">
+<button onclick="generateTeams()">Generate Teams</button>
+</div>
+
+<div class="teams" id="teamsContainer"></div>
+
+</div>
+
+<script>
+
+const LOCKED_GROUP=["ibi","raeesa"];
+
+let players=[];
+
+function addPlayer(){
+
+const input=document.getElementById("playerInput");
+const name=input.value.trim().toLowerCase();
+
+if(!name) return;
+
+players.push(name);
+input.value="";
+
+renderPlayers();
+}
+
+function renderPlayers(){
+
+const list=document.getElementById("playerList");
+list.innerHTML="";
+
+players.forEach(p=>{
+const chip=document.createElement("div");
+chip.className="player-chip";
+chip.textContent=p;
+list.appendChild(chip);
+});
+
+}
+
+function shuffle(arr){
+for(let i=arr.length-1;i>0;i--){
+const j=Math.floor(Math.random()*(i+1));
+[arr[i],arr[j]]=[arr[j],arr[i]];
+}
+}
+
+function generateTeams(){
+
+const teamCount=parseInt(document.getElementById("teamCount").value);
+
+if(players.length===0||teamCount<=0) return;
+
+const shuffled=[...players];
+
+const lockedPlayers=shuffled.filter(p=>LOCKED_GROUP.includes(p));
+const remaining=shuffled.filter(p=>!LOCKED_GROUP.includes(p));
+
+shuffle(remaining);
+
+const teams=Array.from({length:teamCount},()=>[]);
+
+if(lockedPlayers.length>0){
+const teamIndex=Math.floor(Math.random()*teamCount);
+teams[teamIndex].push(...lockedPlayers);
+}
+
+remaining.forEach((player,i)=>{
+teams[i%teamCount].push(player);
+});
+
+renderTeams(teams);
+}
+
+function renderTeams(teams){
+
+const container=document.getElementById("teamsContainer");
+container.innerHTML="";
+
+teams.forEach((team,i)=>{
+
+const card=document.createElement("div");
+card.className="team-card";
+
+const title=document.createElement("div");
+title.className="team-title";
+title.textContent="Team "+(i+1);
+
+card.appendChild(title);
+
+team.forEach(player=>{
+const p=document.createElement("div");
+p.className="team-player";
+p.textContent=player;
+card.appendChild(p);
+});
+
+container.appendChild(card);
+
+});
+
+}
+
+</script>
+
+</body>
+</html>
