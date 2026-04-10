@@ -2,6 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta charset="UTF-8">
 <title>Team Generator</title>
 
@@ -10,111 +11,148 @@
 <style>
 
 *{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:"Poppins",sans-serif;
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+  font-family:"Poppins",sans-serif;
 }
 
 body{
-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-background:linear-gradient(135deg,#667eea,#764ba2);
-color:white;
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center; /* center vertically */
+  background:linear-gradient(135deg,#667eea,#764ba2);
+  color:white;
+  padding:16px;
 }
 
+/* 📱 On small screens → allow scroll instead of forced center */
+@media (max-width: 500px){
+  body{
+    align-items:flex-start;
+  }
+}
+
+/* APP CONTAINER */
 .app{
-width:900px;
-background:rgba(255,255,255,0.1);
-backdrop-filter:blur(20px);
-padding:40px;
-border-radius:20px;
-box-shadow:0 20px 40px rgba(0,0,0,0.3);
+  width:100%;
+  max-width:600px; /* responsive instead of fixed 900px */
+  background:rgba(255,255,255,0.1);
+  backdrop-filter:blur(20px);
+  padding:20px;
+  border-radius:20px;
+  box-shadow:0 20px 40px rgba(0,0,0,0.3);
 }
 
+/* TITLE */
 h1{
-text-align:center;
-margin-bottom:25px;
-font-weight:600;
+  text-align:center;
+  margin-bottom:20px;
+  font-weight:600;
+  font-size:clamp(20px,5vw,28px);
 }
 
+/* CONTROLS */
 .controls{
-display:flex;
-gap:10px;
-margin-bottom:20px;
-}
-
-input{
-flex:1;
-padding:12px;
-border:none;
-border-radius:10px;
-outline:none;
-}
-
-button{
-padding:12px 18px;
-border:none;
-border-radius:10px;
-cursor:pointer;
-font-weight:600;
-background:#ff7a18;
-color:white;
-transition:0.2s;
-}
-
-button:hover{
-transform:translateY(-2px);
-box-shadow:0 6px 14px rgba(0,0,0,0.3);
-}
-
-.players{
-display:flex;
-flex-wrap:wrap;
-gap:10px;
-margin-bottom:20px;
-}
-
-.player-chip{
-background:rgba(255,255,255,0.2);
-padding:8px 14px;
-border-radius:20px;
-font-size:14px;
+  display:flex;
+  gap:10px;
+  margin-bottom:15px;
 }
 
 .team-controls{
-display:flex;
-gap:10px;
-margin-bottom:25px;
+  display:flex;
+  gap:10px;
+  margin-bottom:20px;
 }
 
+/* INPUTS */
+input{
+  flex:1;
+  padding:12px;
+  border:none;
+  border-radius:10px;
+  outline:none;
+  font-size:16px;
+}
+
+/* BUTTONS */
+button{
+  padding:12px 16px;
+  border:none;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:600;
+  background:#ff7a18;
+  color:white;
+  transition:0.2s;
+  white-space:nowrap;
+}
+
+button:hover{
+  transform:translateY(-2px);
+  box-shadow:0 6px 14px rgba(0,0,0,0.3);
+}
+
+/* PLAYER LIST */
+.players{
+  display:flex;
+  flex-wrap:wrap;
+  gap:8px;
+  margin-bottom:15px;
+}
+
+.player-chip{
+  background:rgba(255,255,255,0.2);
+  padding:6px 12px;
+  border-radius:20px;
+  font-size:13px;
+}
+
+/* TEAMS GRID */
 .teams{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(200px,1fr));
-gap:20px;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
+  gap:15px;
 }
 
+/* TEAM CARD */
 .team-card{
-background:rgba(255,255,255,0.15);
-border-radius:15px;
-padding:15px;
+  background:rgba(255,255,255,0.15);
+  border-radius:15px;
+  padding:12px;
 }
 
 .team-title{
-font-weight:600;
-margin-bottom:10px;
+  font-weight:600;
+  margin-bottom:8px;
 }
 
 .team-player{
-background:rgba(255,255,255,0.25);
-padding:6px 10px;
-border-radius:8px;
-margin-bottom:6px;
-font-size:14px;
+  background:rgba(255,255,255,0.25);
+  padding:5px 8px;
+  border-radius:8px;
+  margin-bottom:5px;
+  font-size:13px;
 }
 
+/* 📱 MOBILE STACK FIX */
+@media (max-width: 500px){
+
+  .controls,
+  .team-controls{
+    flex-direction:column;
+  }
+
+  button{
+    width:100%;
+  }
+
+  input{
+    width:100%;
+  }
+
+}
 </style>
 </head>
 
